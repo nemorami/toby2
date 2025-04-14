@@ -10,3 +10,21 @@ class DaoFactory {
         return UserDao(DConnectionMaker())
     }
 }
+
+@Configuration
+class CountingDaoFactory {
+    @Bean
+    fun userDao(): UserDao {
+        return UserDao(connectionMaker())
+    }
+
+    @Bean
+    fun connectionMaker(): ConnectionMaker {
+        return CountingConnectionMaker(realConnectionMaker())
+    }
+
+    @Bean
+    fun realConnectionMaker(): ConnectionMaker {
+        return DConnectionMaker()
+    }
+}

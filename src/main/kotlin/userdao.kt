@@ -3,10 +3,15 @@ package org.example
 /**
  * User dao
  *
+ * @property connectionMaker
  * @constructor Create empty User dao
  */
 class UserDao(val connectionMaker: ConnectionMaker) {
-    //private val simpleConnectionMaker = SimpleConnectionMaker()
+    /**
+     * Add
+     *
+     * @param user
+     *///private val simpleConnectionMaker = SimpleConnectionMaker()
     fun add(user: User) {
         connectionMaker.makeConnection().use { c ->
             c.prepareStatement("INSERT INTO users (id, name, password) VALUES (?, ?, ?)").use { ps ->
@@ -19,6 +24,12 @@ class UserDao(val connectionMaker: ConnectionMaker) {
         }
     }
 
+    /**
+     * Get
+     *
+     * @param id
+     * @return
+     */
     fun get(id: String): User? {
         connectionMaker.makeConnection().use { c ->
             c.prepareStatement("select * from users where id = ?").use { ps ->

@@ -12,7 +12,8 @@ data class User(val id: String, val name: String, val password: String)
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val context = AnnotationConfigApplicationContext(DaoFactory::class.java)
+    //val context = AnnotationConfigApplicationContext(DaoFactory::class.java)
+    val context = AnnotationConfigApplicationContext(CountingDaoFactory::class.java)
     val dao = context.getBean("userDao", UserDao::class.java)
     val user = User("John", "Peter", "123456")
 //    val connectionMaker = DConnectionMaker()
@@ -25,6 +26,9 @@ fun main() {
 
     val user2 = dao.get(user.id)
     println(user2?.name)
+
+    val ccm = context.getBean("connectionMaker", CountingConnectionMaker::class.java)
+    println("Connection counter: ${ccm.get_Counter()}")
 }
 
 
