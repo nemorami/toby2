@@ -28,7 +28,7 @@ fun main() {
     println(user2?.name)
 
     val ccm = context.getBean("connectionMaker", CountingConnectionMaker::class.java)
-    println("Connection counter: ${ccm.get_Counter()}")
+    println("Connection counter: ${ccm.counter}")
 }
 
 

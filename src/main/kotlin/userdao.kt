@@ -6,7 +6,10 @@ package org.example
  * @property connectionMaker
  * @constructor Create empty User dao
  */
-class UserDao(val connectionMaker: ConnectionMaker) {
+class UserDao(/*val connectionMaker: ConnectionMaker*/) {
+    var connectionMaker: ConnectionMaker? = null
+
+
     /**
      * Add
      *

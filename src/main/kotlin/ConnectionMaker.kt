@@ -21,7 +21,7 @@ class CountingConnectionMaker(val realConnectionMaker: ConnectionMaker): Connect
         counter++
         return realConnectionMaker.makeConnection()
     }
-    fun get_Counter(): Int {
-        return counter
-    }
+//    fun get_Counter(): Int {
+//        return counter
+//    }
 }
