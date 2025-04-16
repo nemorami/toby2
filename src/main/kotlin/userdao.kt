@@ -1,13 +1,14 @@
 package org.example
 
+import javax.sql.DataSource
+
 /**
  * User dao
  *
  * @property connectionMaker
  * @constructor Create empty User dao
  */
-class UserDao(/*val connectionMaker: ConnectionMaker*/) {
-    var connectionMaker: ConnectionMaker? = null
+class UserDao(val dataSource: DataSource/*val connectionMaker: ConnectionMaker*/) {
 
 
     /**
@@ -16,7 +17,7 @@ class UserDao(/*val connectionMaker: ConnectionMaker*/) {
      * @param user
      *///private val simpleConnectionMaker = SimpleConnectionMaker()
     fun add(user: User) {
-        connectionMaker.makeConnection().use { c ->
+        dataSource.getConnection().use { c ->
             c.prepareStatement("INSERT INTO users (id, name, password) VALUES (?, ?, ?)").use { ps ->
                 ps.setString(1, user.id)
                 ps.setString(2, user.name)
@@ -34,7 +35,7 @@ class UserDao(/*val connectionMaker: ConnectionMaker*/) {
      * @return
      */
     fun get(id: String): User? {
-        connectionMaker.makeConnection().use { c ->
+        dataSource.getConnection().use { c ->
             c.prepareStatement("select * from users where id = ?").use { ps ->
                 ps.setString(1, id)
                 ps.executeQuery().use { rs ->

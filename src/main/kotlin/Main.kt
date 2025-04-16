@@ -20,9 +20,14 @@ fun main() {
 //    val dao = UserDao(connectionMaker)
     //val dao = DaoFactory().userDao()
 
-    dao.add(user)
+    try {
+        dao.add(user)
+        println("${dao.get(user.id)} 등록성공")
+    } catch (e: Exception) {
+        println(e)
+    }
 
-    println("${dao.get(user.id)} 등록성공")
+
 
     val user2 = dao.get(user.id)
     println(user2?.name)
