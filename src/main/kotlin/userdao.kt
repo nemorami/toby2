@@ -27,7 +27,25 @@ class UserDao(val dataSource: DataSource/*val connectionMaker: ConnectionMaker*/
             }
         }
     }
+    fun deleteAll(): Unit {
+        dataSource.connection.use { c ->
+            c.prepareStatement("DELETE FROM users").use { ps ->
+                ps.executeUpdate()
+            }
+        }
 
+    }
+    fun getCount(): Int {
+        var count = 0
+        dataSource.connection.use { c ->
+            c.prepareStatement("SELECT count(*) FROM users").use { ps ->
+                val rs = ps.executeQuery()
+                rs.next()
+                rs.getInt(1).also { count = it }
+            }
+        }
+        return count
+    }
     /**
      * Get
      *
