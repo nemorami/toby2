@@ -1,5 +1,6 @@
 package org.example
 
+import org.springframework.dao.EmptyResultDataAccessException
 import javax.sql.DataSource
 
 /**
@@ -57,8 +58,10 @@ class UserDao(val dataSource: DataSource/*val connectionMaker: ConnectionMaker*/
             c.prepareStatement("select * from users where id = ?").use { ps ->
                 ps.setString(1, id)
                 ps.executeQuery().use { rs ->
-                    rs.next()
-                    return User(rs.getString("id"), rs.getString("name"), rs.getString("password"))
+                    if(rs.next())
+                        return User(rs.getString("id"), rs.getString("name"), rs.getString("password"))
+                    else
+                        throw EmptyResultDataAccessException(1)
                 }
             }
         }

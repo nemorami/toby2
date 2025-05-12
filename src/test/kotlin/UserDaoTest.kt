@@ -5,14 +5,21 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
+import org.springframework.dao.EmptyResultDataAccessException
 
 
 class UserDaoTest {
-//    @BeforeEach
-//    fun setUp() {
-//        TODO("Not yet implemented")
+    lateinit var dao: UserDao
+//    val dao: UserDao by lazy {
+//        setUp()
 //    }
+    @BeforeEach
+    fun setUp() {
+        val context  = AnnotationConfigApplicationContext(CountingDaoFactory::class.java)
+        dao = context.getBean("userDao", UserDao::class.java)
+    }
 
     //    @AfterEach
 //    fun tearDown() {
@@ -20,8 +27,8 @@ class UserDaoTest {
 //    }
     @Test
     fun addAndGet() {
-        val context = AnnotationConfigApplicationContext(CountingDaoFactory::class.java)
-        val dao = context.getBean("userDao", UserDao::class.java)
+
+
         val user1 = User("gyumee", "박성철", "springno1")
         val user2 = User("leegw700", "이길원", "springno2")
 //    val connectionMaker = DConnectionMaker()
@@ -46,8 +53,7 @@ class UserDaoTest {
     }
     @Test
     fun getCount(): Unit {
-        val context = AnnotationConfigApplicationContext(CountingDaoFactory::class.java)
-        val dao = context.getBean("userDao", UserDao::class.java)
+
         val user1 = User("gyumee", "박성철", "springno1")
         val user2 = User("leegw700", "이길원", "springno2")
         val user3 = User("bumjin", "박범진", "springno3")
@@ -60,9 +66,16 @@ class UserDaoTest {
         assertEquals(dao.getCount(), 2)
         dao.add(user3)
         assertEquals(dao.getCount(), 3)
+    }
+    @Test /* (expected=EmptyResultDataAccessException::class.java) */
+    fun getException() {
 
-
-
+        dao.deleteAll()
+        assertEquals(dao.getCount(), 0)
+        val e = assertThrows<EmptyResultDataAccessException>(){
+            dao.get("unknown_id")
+        }
+        println("exception: ${e.message!!}")
 
 
     }
