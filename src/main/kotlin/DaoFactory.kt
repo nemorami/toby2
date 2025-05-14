@@ -47,3 +47,19 @@ class CountingDaoFactory {
         return DConnectionMaker()
     }
 }
+
+@Configuration
+open class TestDaoFactory {
+    @Bean
+    fun userDao(): UserDao {
+        return UserDao(dataSource())
+
+    }
+    @Bean
+    fun dataSource(): DataSource {
+        return SimpleDriverDataSource(org.postgresql.Driver(),
+            "jdbc:postgresql://localhost/nemorami",
+            "nemorami",
+            "j5nfants")
+    }
+}

@@ -6,20 +6,41 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
 
+@ExtendWith(SpringExtension::class)
+@ContextConfiguration(classes = [TestDaoFactory::class])
 class UserDaoTest {
+
+    @Autowired
+    //Check if context can null
+    var context: ApplicationContext? = null
+    @Autowired
     lateinit var dao: UserDao
+    //lateinit var dao: UserDao
 //    val dao: UserDao by lazy {
 //        setUp()
 //    }
+    val user1 = User("gyumee", "박성철", "springno1")
+    val user2 = User("leegw700", "이길원", "springno2")
+    val user3 = User("bumjin", "박범진", "springno3")
+
     @BeforeEach
     fun setUp() {
-        val context  = AnnotationConfigApplicationContext(CountingDaoFactory::class.java)
-        dao = context.getBean("userDao", UserDao::class.java)
+        //val context = AnnotationConfigApplicationContext(CountingDaoFactory::class.java)
+        //if di userDao directly we don't need get userDao bean
+       //dao = context!!.getBean("userDao", UserDao::class.java)
+        println("in setup methond: $context")
+        println(this)
     }
+
 
     //    @AfterEach
 //    fun tearDown() {
@@ -29,8 +50,6 @@ class UserDaoTest {
     fun addAndGet() {
 
 
-        val user1 = User("gyumee", "박성철", "springno1")
-        val user2 = User("leegw700", "이길원", "springno2")
 //    val connectionMaker = DConnectionMaker()
 //    val dao = UserDao(connectionMaker)
         //val dao = DaoFactory().userDao()
@@ -54,9 +73,7 @@ class UserDaoTest {
     @Test
     fun getCount(): Unit {
 
-        val user1 = User("gyumee", "박성철", "springno1")
-        val user2 = User("leegw700", "이길원", "springno2")
-        val user3 = User("bumjin", "박범진", "springno3")
+
 
         dao.deleteAll()
         assertEquals(dao.getCount(), 0)

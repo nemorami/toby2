@@ -19,10 +19,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
     //runtimeOnly("com.h2database:h2")
     runtimeOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.postgresql:postgresql:42.5.3")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    implementation("org.postgresql:postgresql:42.7.5")
     //testImplementation(kotlin("test"))
 }
 
